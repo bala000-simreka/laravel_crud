@@ -27,13 +27,8 @@
             const ab = await (await fetch(URL_TO_DOWNLOAD)).arrayBuffer();
 
             /* Parse file and get first worksheet */
-            const wb = XLSX.read(ab);
-            
-
-            
+            const wb = XLSX.read(ab);  
             x_spreadsheet(container).loadData(stox(wb));
-        setDone(true);
-            return data;
         })();
         
     </script>
