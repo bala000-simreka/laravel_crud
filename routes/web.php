@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EmployeeController;
@@ -17,11 +18,19 @@ use App\Http\Controllers\PlotlyController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    if (Auth::check()) {
+        return redirect()->route('plotly.index');
+    } else {
+        return redirect()->route('login');
+    }
+    //return view('welcome');
 });
 
 Auth::routes();
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', function(){
+    return redirect()->route('plotly.index');
+})->name('home');
 
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('users', UserController::class);
