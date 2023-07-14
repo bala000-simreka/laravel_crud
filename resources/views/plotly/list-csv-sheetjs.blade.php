@@ -15,9 +15,7 @@
         </div>
     @endif
    
-    
-    <div id="TableContainer"></div>
-    <div id="gridctr"></div>
+    <div id="gridctr" width=1600 height=2000></div>
 
     <script>
         (async() => {
@@ -27,8 +25,27 @@
             const ab = await (await fetch(URL_TO_DOWNLOAD)).arrayBuffer();
 
             /* Parse file and get first worksheet */
-            const wb = XLSX.read(ab);  
-            x_spreadsheet(container).loadData(stox(wb));
+            const wb = XLSX.read(ab);
+
+            var ws = wb.Sheets[wb.SheetNames[0]];
+            var html = XLSX.utils.sheet_to_json(ws,{header:1});
+
+            const options = {
+                view: {
+                    height: () => document.documentElement.clientHeight-150,
+                    width: () => document.documentElement.clientWidth-233,
+                },
+                row: {
+                    len: html.length
+                },
+                col: {
+                    len: html[0].length
+                },
+            };
+            // console.log(html);
+            // console.log('stox');
+            // console.log(stox(wb));
+            x_spreadsheet(container, options).loadData(stox(wb));
         })();
         
     </script>

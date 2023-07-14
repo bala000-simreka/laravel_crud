@@ -30,6 +30,11 @@
     <!-- x-spreadsheet library -->
     <script src="{{ asset('js/xspreadsheet.js') }}"></script>
     <script src="{{ asset('js/xlsxspread.js') }}"></script>
+
+    <!-- clusterize js -->
+    <link href="{{ asset('css/clusterize.css') }}" rel="stylesheet">
+    <script src="{{ asset('js/clusterize.min.js') }}"></script>   
+
     <style>
         .modal {
             display: none;
@@ -134,7 +139,7 @@
         $(document).ready(function() {
             var isAuthenticated = "{{ Auth::check() ? 'true' : 'false' }}";
             if(isAuthenticated == 'true'){
-                var sessionTimeout = 3 * 60 * 1000; // Session timeout in milliseconds (3 minutes)
+                var sessionTimeout = 5 * 60 * 1000; // Session timeout in milliseconds (3 minutes)
                 var popupTime = 1 * 60 * 1000; // Time to show the popup before session timeout (1 minute)
                 var warningTime = sessionTimeout - popupTime; // Time remaining before showing the popup (2 minutes)
                 var logoutTimer;

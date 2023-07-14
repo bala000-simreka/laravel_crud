@@ -3,7 +3,7 @@
 @section('content')
 <!-- <ul class="nav nav-tabs" id="myTabs">
   <li class="nav-item">
-    <a class="nav-link active" data-toggle="tab" data-url="{{ route('plotly.list') }}" href="#tab1">Data List</a>
+    <a class="nav-link active" data-toggle="tab" data-url="{{ route('plotly.listsheet') }}" href="#tab1">Data List</a>
   </li>
   <li class="nav-item">
     <a class="nav-link" data-toggle="tab" data-url="{{ route('plotly.index') }}" href="#tab2">Visualise</a>
@@ -53,27 +53,21 @@
                     <strong>X-Axis:</strong>
                     <select id="x_axis" class="form-control" name="x_axis" required>
                         <option value="">-- Select x-axis product --</option>
-                        <!-- @foreach($allCols as $col)
-                            <option value="{{ strtolower($col) }}">{{ $col }}</option>
-                        @endforeach -->
+                        
                     </select>
                 </div>
                 <div class="form-group" id="y-axis-field" style="display: none;">
                     <strong>Y-Axis:</strong>
                     <select id="y_axis" class="form-control" name="y_axis" required>
                     <option value="">-- Select y-axis product --</option>
-                        <!-- @foreach($allCols as $col)
-                            <option value="{{ strtolower($col) }}">{{ $col }}</option>
-                        @endforeach -->
+                        
                     </select>
                 </div>
                 <div class="form-group" id="z-axis-field" style="display: none;">
                     <strong>Z-Axis:</strong>
                     <select id="z_axis" class="form-control" name="z_axis" required>
                         <option value="">-- Select z-axis product --</option>
-                        <!-- @foreach($allCols as $col)
-                            <option value="{{ strtolower($col) }}">{{ $col }}</option>
-                        @endforeach -->
+                        
                     </select>
                 </div>
                 <div class="col-md-6 text-center">
@@ -120,28 +114,28 @@
                 $('#plotlyForm')[0].reset();
             });
 
-            /*$('#myTabs a').on('click', function(e) {
-                e.preventDefault();
+            // $('#myTabs a').on('click', function(e) {
+            //     e.preventDefault();
 
-                var target = $(this).attr('href'); // Get the target tab
-                var url = $(this).data('url'); // Get the data-url attribute containing the URL of the content page
+            //     var target = $(this).attr('href'); // Get the target tab
+            //     var url = $(this).data('url'); // Get the data-url attribute containing the URL of the content page
 
-                // Make an AJAX request to fetch the content
-                $.ajax({
-                url: url,
-                type: 'GET',
-                dataType: 'html',
-                success: function(response) {
-                    $(target).html(response); // Insert the fetched content into the tab
-                },
-                error: function(xhr) {
-                    $(target).html('Error loading content.'); // Display an error message if content cannot be loaded
-                }
-                });
-            });
+            //     // Make an AJAX request to fetch the content
+            //     $.ajax({
+            //     url: url,
+            //     type: 'GET',
+            //     dataType: 'html',
+            //     success: function(response) {
+            //         $(target).html(response); // Insert the fetched content into the tab
+            //     },
+            //     error: function(xhr) {
+            //         $(target).html('Error loading content.'); // Display an error message if content cannot be loaded
+            //     }
+            //     });
+            // });
 
-            // Trigger the first tab to load its content
-            $('#myTabs a:first').trigger('click');*/
+            // // Trigger the first tab to load its content
+            // $('#myTabs a:first').trigger('click');
 
             //show-hide products fields based on graph-type selection
             $(document).on('change', '.graphtype', function() {

@@ -37,10 +37,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('employees', EmployeeController::class);
 
     Route::get('plotly', [PlotlyController::class, 'index'])->name('plotly.index');
+    Route::get('plotly/visualise', [PlotlyController::class, 'visualise'])->name('plotly.visualise');
     Route::get('plotly/list-data', [PlotlyController::class, 'listData'])->name('plotly.list');
     Route::post('plotly-get-column-data', [PlotlyController::class, 'getColumnDataCSV'])->name('plotly.ajax_get_column_data');
     Route::get('plotly/list-new', [PlotlyController::class, 'importCSV'])->name('plotly.listnew');
     Route::get('plotly/list-sheet', [PlotlyController::class, 'listCSVsheetjs'])->name('plotly.listsheet');
-    
-    
+    Route::get('plotly/list-table', [PlotlyController::class, 'listCSVTable'])->name('plotly.listtable');    
 });

@@ -19,11 +19,21 @@ class PlotlyController extends Controller
         return view('plotly.index', compact('allCols'));
     }
 
+    public function visualise()
+    {
+        return view('plotly.visualise');
+    }
+
     public function listCSVsheetjs()
     {
         return view('plotly.list-csv-sheetjs');
     }
 
+    public function listCSVTable(){
+        return view('plotly.list-csv-table');
+    }
+
+    //Maatwebsite/excel implementation of csv
     public function importCSV()
     {
         $path = storage_path('app/public/50k-36.csv'); // execution time exceeded 60s
@@ -35,6 +45,7 @@ class PlotlyController extends Controller
         return view('plotly.list-new', ['allData' => $data[0]]);
     }
 
+    //league/csv implementation of csv
     public function getAllDataCSV(){
         $plotData = [];
         $filePath = Storage::disk('local')->path('public/BostonHousing.csv');;
