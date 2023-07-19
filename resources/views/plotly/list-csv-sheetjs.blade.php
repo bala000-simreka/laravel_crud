@@ -30,6 +30,7 @@
             var ws = wb.Sheets[wb.SheetNames[0]];
             var html = XLSX.utils.sheet_to_json(ws,{header:1});
 
+            console.log(html);
             const options = {
                 view: {
                     height: () => document.documentElement.clientHeight-150,
@@ -42,9 +43,7 @@
                     len: html[0].length
                 },
             };
-            // console.log(html);
-            // console.log('stox');
-            // console.log(stox(wb));
+            
             x_spreadsheet(container, options).loadData(stox(wb));
         })();
         

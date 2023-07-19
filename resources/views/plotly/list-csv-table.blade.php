@@ -6,35 +6,42 @@
             max-height: 700px;
             overflow: auto;
         }
+        table {
+            height: 100%;
+            border-collapse: collapse;
+            width: 100%;
+            margin: 10px;
+            font-size: 0.8em;
+        }
+
+        thead {
+            position: sticky;
+            top: 0;
+            background: #eee;
+        }
     </style>
     <div class="row">
         <div class="col-lg-12 margin-tb">
             <div class="pull-left">
-                <h2>Plot Data 50k</h2>
+                <h2>Table with Graph</h2>
             </div>
         </div>
     </div>
-   
-    @if ($message = Session::get('success'))
-        <div class="alert alert-success">
-            <p>{{ $message }}</p>
-        </div>
-    @endif
 
-    <button id="loadButton">Load CSV Table</button>
+    <!-- <button id="loadButton">Load CSV Table</button> -->
    
     <div id="NoOfRows"></div>
     <div id="statusContainer"></div>
     <div id="TableContainer"></div>
 
     <!--HTML-->
-    <div class="clusterize">
-        
+    <div class="clusterize">        
         <div id="scrollArea" class="clusterize-scroll">
-            <table id="dtDynamicVerticalScrollExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+            <table id="clusterizeTable" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                <thead></thead>
                 <tbody id="contentArea" class="clusterize-content">
                     <tr class="clusterize-no-data">
-                        <td>Loading data...</td>
+                        <td>Loading Table...</td>
                     </tr>
                 </tbody>
             </table>
@@ -43,49 +50,55 @@
 
     <script>
         (() => {
-            $('#loadButton').click(function(){
+            //$('#loadButton').click(function(){
                 var clusterizedData = [];
-                const worker = new Worker("{{ asset('js/webworker/csvreader-worker.js') }}");
-
                 var container = $('#TableContainer');
                 var rowsContainer = $('#NoOfRows');
                 var statusContainer = $('#statusContainer');
                 /* URL of the csv file */
                 const URL_TO_DOWNLOAD = "{{ asset('storage/50k-36.csv') }}";
+                var loader = "{{asset('images/loader.gif')}}";
                 var cnt = 0;
+
+                const worker = new Worker("{{ asset('js/webworker/clusterize-with-graph-worker.js') }}");
+
+                /* post a message to the worker with the URL to fetch */
+                worker.postMessage({url: URL_TO_DOWNLOAD, loader:loader, xlsxscript: "{{ asset('js/xlsx.full.min.js') }}"});
 
                 /* when the worker sends back data, add it to the DOM */
                 worker.onmessage = function(e) {                    
                     if(e.data.error) return statusContainer.html(e.data.error);
                     else if(e.data.state) {
                         if(e.data.state == 'done'){
-                            populateTable(clusterizedData); 
+                            populateTable(e.data.headerHtml, e.data.graphHtml, e.data.graphData, e.data.clusterizedData, e.data.headers); 
                         }
                         return statusContainer.html(e.data.state);
                     }
-                    
-                    if((e.data.csv).includes("<tr>")){
-                        clusterizedData.push(e.data.csv);
-                    }
-                    //container.html(e.data.csv);
                     cnt = cnt+1;
                     rowsContainer.html(cnt);
-                };
-                /* post a message to the worker with the URL to fetch */
-                worker.postMessage({url: URL_TO_DOWNLOAD, xlsxscript: "{{ asset('js/xlsx.full.min.js') }}"});
+                };                
 
-                function populateTable(clusterizedData){
+                function populateTable(headerHtml, graphHtml, graphData, clusterizedData, headers){                    
                     var clusterize = new Clusterize({
                         rows: clusterizedData,
                         scrollId: 'scrollArea',
                         contentId: 'contentArea'
                     });
+                    $("#clusterizeTable thead").html(headerHtml+graphHtml);
+                    for(var i=0; i<graphData.length; i++){
+                        var data = {};
+                        data.x = graphData[i];
+                        data.xtitle = headers[i];
+                        //custom changes with defaults
+                        data.customLayout = {height:300, width:300};
+                        data.defaultConfig = { displayModeBar: false };
+                        //own custom changes
+                        data.customNotitle = true;
+                        $("#graph_"+i).html('');
+                        plotGraph('histogram', data, 'graph_'+i);
+                    }
                 }
-            });
-
-            // $('#dtDynamicVerticalScrollExample').DataTable();        
-        })();
-        
-    </script>
-      
+            //});      
+        })();        
+    </script>      
 @endsection

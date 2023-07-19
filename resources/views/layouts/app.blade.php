@@ -35,6 +35,7 @@
     <link href="{{ asset('css/clusterize.css') }}" rel="stylesheet">
     <script src="{{ asset('js/clusterize.min.js') }}"></script>   
 
+    <script src="{{ asset('js/custom.js') }}"></script>
     <style>
         .modal {
             display: none;
